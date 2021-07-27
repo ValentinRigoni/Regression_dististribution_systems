@@ -1,0 +1,44 @@
+Clear 
+Set DefaultBaseFrequency=60
+
+new circuit.IEEE13Nodeckt 
+~ basekv=115 pu=1.0001 phases=1 bus1=SourceBus  
+
+!SUB TRANSFORMER DEFINITION 
+New Transformer.Sub Phases=1 Windings=2   XHL=(8 1000 /)
+~ wdg=1 bus=SourceBus   kv=115  kva=5000   %r=(.5 1000 /) 
+~ wdg=2 bus=632         kv=4.16  kva=5000   %r=(.5 1000 /)  
+
+New linecode.mtx605 nphases=1 BaseFreq=60 
+~ rmatrix = (0.8 ) 
+~ xmatrix = (0.8 ) 
+~ units=mi 
+
+!LOAD DEFINITIONS 
+New Load.671 Bus1=671  Phases=1 Model=1 kV=4.16   kW=1155 kvar=660 Vminpu=0.8 Vmaxpu=1.2
+New Load.633 Bus1=633     Phases=1 Model=1 kV=4.16  kW=300   kvar=200 Vminpu=0.8 Vmaxpu=1.2
+New Load.645 Bus1=645       Phases=1 Model=1 kV=4.16      kW=170   kvar=125 Vminpu=0.8 Vmaxpu=1.2
+New Load.646 Bus1=646    Phases=1 Model=2 kV=4.16    kW=230   kvar=132 Vminpu=0.8 Vmaxpu=1.2
+New Load.692 Bus1=692    Phases=1 Model=5 kV=4.16    kW=170   kvar=151 Vminpu=0.8 Vmaxpu=1.2
+New Load.675 Bus1=675    Phases=1 Model=1 kV=4.16  kW=800   kvar=250 Vminpu=0.8 Vmaxpu=1.2
+New Load.611 Bus1=611      Phases=1 Model=5 kV=4.16  kW=170   kvar=80 Vminpu=0.8 Vmaxpu=1.2
+New Load.652 Bus1=652      Phases=1 Model=2 kV=4.16  kW=128   kvar=86 Vminpu=0.8 Vmaxpu=1.2
+New Load.670 Bus1=670    Phases=1 Model=1 kV=4.16  kW=200    kvar=80 Vminpu=0.8 Vmaxpu=1.2
+
+!LINE DEFINITIONS 
+New Line.632670    Phases=1 Bus1=632    Bus2=670  LineCode=mtx605 Length=667  units=ft    
+New Line.670671    Phases=1 Bus1=670    Bus2=671  LineCode=mtx605 Length=1333 units=ft 
+New Line.671680    Phases=1 Bus1=671    Bus2=680  LineCode=mtx605 Length=1000 units=ft 
+New Line.632633    Phases=1 Bus1=632    Bus2=633  LineCode=mtx605 Length=500  units=ft 
+New Line.632645    Phases=1 Bus1=632      Bus2=645    LineCode=mtx605 Length=500  units=ft 
+New Line.645646    Phases=1 Bus1=645      Bus2=646    LineCode=mtx605 Length=300  units=ft 
+New Line.692675    Phases=1 Bus1=692    Bus2=675  LineCode=mtx605 Length=500  units=ft 
+New Line.671684    Phases=1 Bus1=671      Bus2=684    LineCode=mtx605 Length=300  units=ft 
+New Line.684611    Phases=1 Bus1=684        Bus2=611      LineCode=mtx605 Length=300  units=ft 
+New Line.684652    Phases=1 Bus1=684        Bus2=652      LineCode=mtx605 Length=800  units=ft 
+New Line.671692    Phases=1 Bus1=671        Bus2=692      LineCode=mtx605 Length=100  units=ft 
+
+Set Voltagebases=[115, 4.16]
+calcv
+Solve
+BusCoords IEEE13Node_BusXY.csv
